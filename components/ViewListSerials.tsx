@@ -1,21 +1,17 @@
-import type { ListSerials } from "@/types/types";
+import type { ListScannerProcess } from "@/types/types";
 import React from "react";
-import { ScrollView, StyleSheet, Text } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
+import ProcessData from "./ProcessData";
 
 interface Props {
-  listSerials: ListSerials;
+  listSerials: ListScannerProcess;
 }
 
 export default function ViewListSerials({ listSerials }: Props) {
   return (
     <ScrollView style={style.container}>
-      <Text style={style.row}>Serial</Text>
-      {Array.from(listSerials).map((serial, index) => {
-        return (
-          <Text style={style.row} key={index}>
-            {serial}
-          </Text>
-        );
+      {Array.from(listSerials).map(({ serial, storage }, index) => {
+        return <ProcessData key={index} serial={serial} storage={storage} />;
       })}
     </ScrollView>
   );
@@ -37,14 +33,5 @@ const style = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 2,
-  },
-  row: {
-    borderTopWidth: 0,
-    borderBottomWidth: 1,
-    borderLeftWidth: 0,
-    borderRightWidth: 0,
-    borderColor: "black",
-    width: "100%",
-    padding: 8,
   },
 });

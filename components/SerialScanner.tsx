@@ -1,26 +1,45 @@
+import validateInput from "@/composables/SerialScanner/validateInput";
 import { useTimeOutScanner } from "@/hooks/timeOutScanner";
-import React, { useEffect, useRef, useState } from "react";
-import { Button, StyleSheet, TextInput, View } from "react-native";
+import type { ColectScannerProcess, Serial, Storage } from "@/types/types";
+import React, { memo, useEffect, useRef, useState } from "react";
+import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 
 interface Props {
-  addSerial: (listSerials: string[]) => void;
+  addSerial: (listSerials: ColectScannerProcess) => void;
 }
 
-export default function SerialScanner({ addSerial }: Props) {
-  const [serial, setSerial] = useState<string>("");
+const SerialScanner = memo(function SerialScanner({ addSerial }: Props) {
+  const [serial, setSerial] = useState<Serial>("");
+  const [storage, setStorage] = useState<Storage>("");
   const inputRef = useRef<TextInput>(null);
   const { handleAddSerial } = useTimeOutScanner(addSerial);
-  
+
   const handleClearSerial = () => {
     inputRef.current?.clear();
     focusInput();
   };
-  
+
   const focusInput = () => {
     inputRef.current?.focus();
   };
-  
-  useEffect(() => focusInput());
+
+  const onChangeText = (text: string) => {
+    setSerial(text);
+    switch (validateInput(text)) {
+      case "serial":
+        if (storage) handleAddSerial(text, storage);
+        setSerial("");
+        break;
+      case "storage":
+        setStorage(text);
+        setSerial("");
+        break;
+      default:
+        if (text.length >= 7) setSerial("");
+    }
+  };
+
+  useEffect(() => focusInput(), []);
   return (
     <View style={styles.row}>
       <TextInput
@@ -31,22 +50,15 @@ export default function SerialScanner({ addSerial }: Props) {
         showSoftInputOnFocus={false}
         editable={true}
         value={serial}
-        onChangeText={(text) => {
-          setSerial(text);
-          if (text.length === 7) {
-            handleAddSerial(text);
-            setSerial("");
-          } else if (text.length >= 7) {
-            setSerial("");
-          }
-        }}
+        onChangeText={onChangeText}
       />
       <View style={styles.buttonContainer}>
         <Button title="Borrar" onPress={handleClearSerial} />
       </View>
+      <Text>{storage}</Text>
     </View>
   );
-}
+});
 
 const styles = StyleSheet.create({
   row: {
@@ -64,3 +76,5 @@ const styles = StyleSheet.create({
     marginLeft: 16,
   },
 });
+
+export default SerialScanner;

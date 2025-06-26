@@ -1,23 +1,35 @@
-import { useState } from "react";
+import type { ColectScannerProcess } from "@/types/types";
+import { useEffect, useRef } from "react";
 
-function useTimeOutScanner(addSerial: (arr: string[]) => void) {
-  const [timeOutID, setTimeOutID] = useState<NodeJS.Timeout | null>(null);
-  const [, setLocalSerials] = useState<string[]>([]);
+function useTimeOutScanner(addSerial: (arr: ColectScannerProcess) => void) {
+  const serialsQueue = useRef<ColectScannerProcess>([]);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const handleAddSerial = (serial: string) => {
-    setLocalSerials((oldLocalSerial) => [...oldLocalSerial, serial]);
-    if (!!timeOutID) {
-      clearTimeout(timeOutID);
+  const handleAddSerial = (serial: string, storage: string) => {
+    serialsQueue.current.push({
+      serial,
+      storage,
+    });
+
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
     }
-    setTimeOutID(
-      setTimeout(() => {
-        setLocalSerials((currentSerials) => {
-          addSerial([...currentSerials]);
-          return [];
-        });
-      }, 2000)
-    );
+
+    timeoutRef.current = setTimeout(() => {
+      const currentSerials = [...serialsQueue.current];
+      addSerial(currentSerials);
+      serialsQueue.current = [];
+      timeoutRef.current = null;
+    }, 2000);
   };
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   return { handleAddSerial };
 }
