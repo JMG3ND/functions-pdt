@@ -41,21 +41,23 @@ const SerialScanner = memo(function SerialScanner({ addSerial }: Props) {
 
   useEffect(() => focusInput(), []);
   return (
-    <View style={styles.row}>
-      <TextInput
-        ref={inputRef}
-        style={styles.input}
-        placeholder="Serial/Ubicación"
-        autoFocus={true}
-        showSoftInputOnFocus={false}
-        editable={true}
-        value={serial}
-        onChangeText={onChangeText}
-      />
-      <View style={styles.buttonContainer}>
-        <Button title="Borrar" onPress={handleClearSerial} />
+    <View>
+      <View style={styles.row}>
+        <TextInput
+          ref={inputRef}
+          style={styles.input}
+          placeholder="Serial/Ubicación"
+          autoFocus={true}
+          showSoftInputOnFocus={false}
+          editable={true}
+          value={serial}
+          onChangeText={onChangeText}
+        />
+        <View style={styles.buttonContainer}>
+          <Button title="Borrar" onPress={handleClearSerial} />
+        </View>
       </View>
-      <Text>{storage}</Text>
+      <Text style={styles.storage}>Ubicación actual: {storage}</Text>
     </View>
   );
 });
@@ -74,6 +76,12 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginLeft: 16,
+  },
+  storage: {
+    alignSelf: "stretch",
+    fontSize: 25,
+    textAlign: "center",
+    padding: 8
   },
 });
 
