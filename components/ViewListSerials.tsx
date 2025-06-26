@@ -1,18 +1,32 @@
-import type { ListScannerProcess } from "@/types/types";
+import type { ListScannerProcess, RefreshListSerial } from "@/types/types";
 import React from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import ProcessData from "./ProcessData";
 
 interface Props {
   listSerials: ListScannerProcess;
+  refreshListSerial: RefreshListSerial;
 }
 
-export default function ViewListSerials({ listSerials }: Props) {
+export default function ViewListSerials({
+  listSerials,
+  refreshListSerial,
+}: Props) {
   return (
     <ScrollView style={style.container}>
-      {Array.from(listSerials).map(({ serial, storage }, index) => {
-        return <ProcessData key={index} serial={serial} storage={storage} />;
-      })}
+      {Object.entries(listSerials).map(
+        ([serial, { storage, process }], index) => {
+          return (
+            <ProcessData
+              key={index}
+              serial={serial}
+              storage={storage}
+              process={process}
+              refreshListSerial={refreshListSerial}
+            />
+          );
+        }
+      )}
     </ScrollView>
   );
 }

@@ -5,11 +5,19 @@ export type inputType = "serial" | "storage";
 
 export type Serial = string;
 export type Storage = string;
+export type Process = boolean
 
 interface ScannerProcess {
   serial: Serial;
   storage: Storage;
 }
 
-export type ListScannerProcess = Set<ScannerProcess>;
+export interface Processing {
+  storage: string;
+  process: Process;
+}
+
+export type ListScannerProcess = Record<string, Processing>;
 export type ColectScannerProcess = ScannerProcess[];
+
+export type RefreshListSerial = (serial: Serial, process: Process) => void

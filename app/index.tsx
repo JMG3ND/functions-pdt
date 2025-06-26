@@ -5,12 +5,15 @@ import React from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 
 export default function Index() {
-  const { addSerial, listSerials } = useAddSerial()
+  const { addSerial, listSerials, refreshListSerial } = useAddSerial();
 
   return (
     <View style={styles.container}>
       <SerialScanner addSerial={addSerial} />
-      <ViewListSerials listSerials={listSerials} />
+      <ViewListSerials
+        listSerials={listSerials}
+        refreshListSerial={refreshListSerial}
+      />
     </View>
   );
 }

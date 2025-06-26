@@ -10,7 +10,7 @@ interface Props {
 
 const SerialScanner = memo(function SerialScanner({ addSerial }: Props) {
   const [serial, setSerial] = useState<Serial>("");
-  const [storage, setStorage] = useState<Storage>("");
+  const [storage, setStorage] = useState<Storage>("#01");
   const inputRef = useRef<TextInput>(null);
   const { handleAddSerial } = useTimeOutScanner(addSerial);
 

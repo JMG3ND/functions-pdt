@@ -7,7 +7,6 @@ import validateStorage from "./validateStorage";
  * @returns Retorna "serial" o "storage" en función del resultado de la validación, Si no coincide con ninguna retorna void
  */
 export default function validateInput(input: string): inputType | void {
-  console.log(validateStorage(input));
   if (validateSerial(input)) return "serial";
   if (validateStorage(input)) return "storage";
 }
