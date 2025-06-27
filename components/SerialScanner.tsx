@@ -1,23 +1,22 @@
 import validateInput from "@/composables/SerialScanner/validateInput";
 import { useTimeOutScanner } from "@/hooks/timeOutScanner";
 import type { ColectScannerProcess, Serial, Storage } from "@/types/types";
+import { Link, useLocalSearchParams } from "expo-router";
 import React, { memo, useEffect, useRef, useState } from "react";
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
+import { StyleSheet, Text, TextInput, View } from "react-native";
 
 interface Props {
   addSerial: (listSerials: ColectScannerProcess) => void;
 }
 
 const SerialScanner = memo(function SerialScanner({ addSerial }: Props) {
+  const { sto } = useLocalSearchParams();
   const [serial, setSerial] = useState<Serial>("");
-  const [storage, setStorage] = useState<Storage>("#01");
+  const [storage, setStorage] = useState<Storage>(
+    typeof sto === "string" ? sto : "#01"
+  );
   const inputRef = useRef<TextInput>(null);
   const { handleAddSerial } = useTimeOutScanner(addSerial);
-
-  const handleClearSerial = () => {
-    inputRef.current?.clear();
-    focusInput();
-  };
 
   const focusInput = () => {
     inputRef.current?.focus();
@@ -54,7 +53,7 @@ const SerialScanner = memo(function SerialScanner({ addSerial }: Props) {
           onChangeText={onChangeText}
         />
         <View style={styles.buttonContainer}>
-          <Button title="Borrar" onPress={handleClearSerial} />
+          <Link href={"/locationPicker"}> UBICACIÓN </Link>
         </View>
       </View>
       <Text style={styles.storage}>Ubicación actual: {storage}</Text>
@@ -76,12 +75,14 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginLeft: 16,
+    borderWidth: 1,
+    padding: 8
   },
   storage: {
     alignSelf: "stretch",
     fontSize: 25,
     textAlign: "center",
-    padding: 8
+    padding: 8,
   },
 });
 

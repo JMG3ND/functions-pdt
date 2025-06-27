@@ -1,4 +1,4 @@
-const api_url = process.env.EXPO_PUBLIC_API_URL;
+const api_url = "http://192.168.1.136:5000";
 const url = `${api_url}/stock/moveStock`;
 
 /**Obtenemos los datos de un producto proporcionando un serial */
