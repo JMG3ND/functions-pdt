@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Montacarga",
-    "slug": "Montacarga",
+    "slug": "api-flex",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
