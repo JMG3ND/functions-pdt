@@ -2,11 +2,12 @@ import { Process, Serial, Storage } from "@/types/types";
 import React, { memo } from "react";
 import { ActivityIndicator, Image, StyleSheet, Text, View } from "react-native";
 const check = require("@/assets/images/check.png");
+const error = require("@/assets/images/error.png");
 
 interface Props {
   serial: Serial;
   storage: Storage;
-  process: Process;
+  process?: Process;
 }
 
 const ProcessData = memo(function ProcessData({
@@ -24,10 +25,12 @@ const ProcessData = memo(function ProcessData({
         <Text>{serial}</Text>
         <Text>{storage}</Text>
       </View>
-      {!process ? (
+      {process === undefined ? (
         <ActivityIndicator />
-      ) : (
+      ) : process ? (
         <Image style={style.image} source={check} />
+      ) : (
+        <Image style={style.image} source={error} />
       )}
     </View>
   );

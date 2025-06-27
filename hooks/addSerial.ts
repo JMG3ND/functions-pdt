@@ -13,7 +13,9 @@ export default function useAddSerial() {
     (serial, process) => {
       setListSerials((prev) => {
         const copy = { ...prev };
-        if (copy[serial]) copy[serial].process = process;
+        if (copy[serial]) {
+          copy[serial].process = process;
+        }
         return copy;
       });
     },
@@ -22,9 +24,14 @@ export default function useAddSerial() {
 
   const sincronizeSerials = useCallback(async () => {
     for (const [serial, { process, storage }] of Object.entries(listSerials)) {
-      if (!process) {
-        await fetchSerial(serial, storage);
-        refreshListSerial(serial, true);
+      if (process === undefined) {
+        try {
+          await fetchSerial(serial, storage);
+          refreshListSerial(serial, true);
+        } catch (error) {
+          console.log(error);
+          refreshListSerial(serial, false);
+        }
       }
     }
   }, [listSerials, refreshListSerial]);
@@ -33,7 +40,7 @@ export default function useAddSerial() {
     setListSerials((prev) => {
       const updated = { ...prev };
       const serialsNoProcessing = Object.entries(updated).filter(
-        ([, value]) => !value.process
+        ([, value]) => value.process === undefined
       );
       const serialNoProcessingObj = Object.fromEntries(serialsNoProcessing);
 
@@ -41,7 +48,6 @@ export default function useAddSerial() {
         ({ serial, storage }) =>
           (serialNoProcessingObj[serial] = {
             storage: storage,
-            process: false,
           })
       );
 
