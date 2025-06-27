@@ -1,15 +1,11 @@
-import type { ColectScannerProcess, OnScanning } from "@/types/types";
+import type { ColectScannerProcess } from "@/types/types";
 import { useEffect, useRef } from "react";
 
-function useTimeOutScanner(
-  addSerial: (arr: ColectScannerProcess) => void,
-  onScanning: OnScanning
-) {
+function useTimeOutScanner(addSerial: (arr: ColectScannerProcess) => void) {
   const serialsQueue = useRef<ColectScannerProcess>([]);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleAddSerial = (serial: string, storage: string) => {
-    onScanning(true);
     serialsQueue.current.push({
       serial,
       storage,
@@ -22,7 +18,7 @@ function useTimeOutScanner(
     timeoutRef.current = setTimeout(() => {
       const currentSerials = [...serialsQueue.current];
       addSerial(currentSerials);
-      onScanning(false);
+
       serialsQueue.current = [];
       timeoutRef.current = null;
     }, 2000);
