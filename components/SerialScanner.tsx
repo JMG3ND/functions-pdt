@@ -1,18 +1,19 @@
 import validateInput from "@/composables/SerialScanner/validateInput";
 import { useTimeOutScanner } from "@/hooks/timeOutScanner";
-import type { ColectScannerProcess, Serial, Storage } from "@/types/types";
+import type { ColectScannerProcess, OnScanning, Serial, Storage } from "@/types/types";
 import React, { memo, useEffect, useRef, useState } from "react";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 
 interface Props {
   addSerial: (listSerials: ColectScannerProcess) => void;
+  onScanning: OnScanning
 }
 
-const SerialScanner = memo(function SerialScanner({ addSerial }: Props) {
+const SerialScanner = memo(function SerialScanner({ addSerial, onScanning }: Props) {
   const [serial, setSerial] = useState<Serial>("");
   const [storage, setStorage] = useState<Storage>("#01");
   const inputRef = useRef<TextInput>(null);
-  const { handleAddSerial } = useTimeOutScanner(addSerial);
+  const { handleAddSerial } = useTimeOutScanner(addSerial, onScanning);
 
   const handleClearSerial = () => {
     inputRef.current?.clear();

@@ -1,5 +1,5 @@
-import { Process, RefreshListSerial, Serial, Storage } from "@/types/types";
-import React, { memo, useEffect } from "react";
+import { Process, Serial, Storage } from "@/types/types";
+import React, { memo } from "react";
 import { ActivityIndicator, Image, StyleSheet, Text, View } from "react-native";
 const check = require("@/assets/images/check.png");
 
@@ -7,33 +7,28 @@ interface Props {
   serial: Serial;
   storage: Storage;
   process: Process;
-  refreshListSerial: RefreshListSerial;
 }
 
 const ProcessData = memo(function ProcessData({
   serial,
   storage,
   process,
-  refreshListSerial,
 }: Props) {
+  /*
   useEffect(() => {
-    if (!process)
-      new Promise<boolean>((resolve) => {
-        setTimeout(() => {
-          const proc = Math.random() * 10 >= 2;
-          resolve(proc);
-        }, Math.random() * 5000);
-      }).then((res) => {
-        refreshListSerial(serial, true);
-      });
-  }, [serial, refreshListSerial, process]);
+    if (!process) fetchSerial(serial, storage, refreshListSerial);
+  }, [serial, refreshListSerial, process, storage]);*/
   return (
     <View style={style.row}>
       <View style={style.cell}>
         <Text>{serial}</Text>
         <Text>{storage}</Text>
       </View>
-      {!process ? <ActivityIndicator /> : <Image style={style.image}  source={check} />}
+      {!process ? (
+        <ActivityIndicator />
+      ) : (
+        <Image style={style.image} source={check} />
+      )}
     </View>
   );
 });
@@ -58,8 +53,8 @@ const style = StyleSheet.create({
   },
   image: {
     width: 20,
-    height: 20
-  }
+    height: 20,
+  },
 });
 
 export default ProcessData;

@@ -21,3 +21,4 @@ export type ListScannerProcess = Record<string, Processing>;
 export type ColectScannerProcess = ScannerProcess[];
 
 export type RefreshListSerial = (serial: Serial, process: Process) => void
+export type OnScanning = (status: boolean) => void

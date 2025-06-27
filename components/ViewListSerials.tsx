@@ -1,16 +1,14 @@
-import type { ListScannerProcess, RefreshListSerial } from "@/types/types";
+import type { ListScannerProcess } from "@/types/types";
 import React from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import ProcessData from "./ProcessData";
 
 interface Props {
   listSerials: ListScannerProcess;
-  refreshListSerial: RefreshListSerial;
 }
 
 export default function ViewListSerials({
   listSerials,
-  refreshListSerial,
 }: Props) {
   return (
     <ScrollView style={style.container}>
@@ -22,7 +20,6 @@ export default function ViewListSerials({
               serial={serial}
               storage={storage}
               process={process}
-              refreshListSerial={refreshListSerial}
             />
           );
         }
