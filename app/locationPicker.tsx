@@ -37,14 +37,14 @@ const storagesNames = [
   "#26",
   "#27",
   "#28",
-  "ALM1_P#1",
-  "ALM1_P#2",
-  "ALM1_P#3",
-  "ALM2_P#1",
-  "ALM2_P#2",
-  "PLAN2_P#1",
-  "PLAN2_P#2",
-  "PLAN2_P#3",
+  "#ALM1_P#1",
+  "#ALM1_P#2",
+  "#ALM1_P#3",
+  "#ALM2_P#1",
+  "#ALM2_P#2",
+  "#PLAN2_P#1",
+  "#PLAN2_P#2",
+  "#PLAN2_P#3",
 ];
 
 export default function locationPicker() {
