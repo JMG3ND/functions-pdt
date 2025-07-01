@@ -22,20 +22,21 @@ export default function useAddSerial() {
     []
   );
 
-  const sincronizeSerials = useCallback(async () => {
-    Object.entries(listSerials).forEach(
-      async ([serial, { process, storage }]) => {
-        if (process === undefined) {
-          try {
-            await fetchSerial(serial, storage);
+  const sincronizeSerials = useCallback(() => {
+    Object.entries(listSerials).forEach(([serial, { process, storage }]) => {
+      if (process === undefined) {
+        fetchSerial(serial, storage)
+          .then(async (response) => {
+            if (response.status !== 200)
+              throw new Error("Error al ubicar producto: ");
             refreshListSerial(serial, true);
-          } catch (error) {
-            console.error(error);
+          })
+          .catch((err) => {
+            console.error(err);
             refreshListSerial(serial, false);
-          }
-        }
+          });
       }
-    );
+    });
   }, [listSerials, refreshListSerial]);
 
   const addSerial = useCallback((serials: ColectScannerProcess) => {
